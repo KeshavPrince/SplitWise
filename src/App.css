@@ -1,0 +1,27 @@
+html,
+body {
+  height: 100%;
+}
+
+#unsolvedNetwork {
+  width: 50%;
+  height: 100%;
+  border: 1px solid lightgray;
+}
+
+#solvedNetwork {
+  width: 100%;
+  height: 100%;
+}
+#container {
+  width: 100%;
+  height: 70%;
+  background-color: white;
+  display: flex;
+  margin: 0 auto;
+}
+#temptext {
+  width: 100%;
+  text-align: center;
+  font-size: x-large;
+}

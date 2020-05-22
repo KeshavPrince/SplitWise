@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import Credits from "./credits"
 
 function App() {
   const [credits, setCredits] = useState([]);
@@ -16,29 +17,44 @@ function App() {
     setAmount(e.target.value);
   };
 
-  const handleAddCredit = () => {
+  const handleAddCredit = (e) => {
+    e.preventDefault();
     setCredits([
       ...credits,
       {
+        id : Math.random(),
         from: from,
         to: to,
         amount: amount,
       },
     ]);
+    setFrom('');
+    setTo('');
+    setAmount('');
   };
+
+  const deleteCredit = (id) => {
+  const newCredits = credits.filter(todo => 
+    {
+    return todo.id !== id
+  });
+  setCredits(newCredits);
+  }
+
 
   return (
     <div>
       <div className="container">
+        <Credits credits = {credits} deleteCredit = {deleteCredit}/>
       <div className="row">
         <div className="col l3"></div>
         <div className="input-field col l2">
-          <input id = "crediter" value={from} onChange={OnChangeFrom} type="text" class="validate"></input>
-          <label for="crediter">Crediter</label>
+          <input id = "lender" value={from} onChange={OnChangeFrom} type="text" class="validate"></input>
+          <label for="lender">Lender</label>
         </div>
         <div className="input-field col l2">
-          <input id = "debiter" value={to} onChange={OnChangeTo} type="text" class="validate"></input>
-          <label for="debiter">Debiter</label>
+          <input id = "borrower" value={to} onChange={OnChangeTo} type="text" class="validate"></input>
+          <label for="borrower">Borrower</label>
         </div>
         <div className="input-field col l2">
           <input id = "amount" value={amount} onChange={OnChangeAmount} type="text" class="validate"></input>
@@ -47,7 +63,7 @@ function App() {
       </div>
       <div className ="row">
         <div className ="col l4"></div>
-      <button type="button" className=" btn btn-success center waves-effect waves-light center" id="addCredit">
+      <button type="button" onClick={handleAddCredit} className="btn btn-success center waves-effect waves-light center" id="addCredit">
         Add
       </button>
       <div className ="col l2"></div>

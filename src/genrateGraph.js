@@ -1,6 +1,7 @@
 import { Network } from "vis-network/standalone/esm/vis-network";
 
 export function genrateGraph(data, network, container) {
+  console.log(data);
   const options = {
     width: "675px",
     edges: {
@@ -43,14 +44,12 @@ export function genrateGraph(data, network, container) {
     edges.push({
       from: myMap.get(obj.from),
       to: myMap.get(obj.to),
-      label: obj.amount,
+      label: obj.amount.toString(),
     });
   });
-  console.log(edges);
   let cur_data = {
     nodes: nodes,
     edges: edges,
   };
-  console.log(cur_data);
   network.current = new Network(container.current, cur_data, options);
 };

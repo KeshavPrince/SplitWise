@@ -4,19 +4,11 @@ body {
   height: 100%;
 }
 
-#container2 {
-  height: 400px;
-  width: 50%;
-  display: flex;
-  background-color: #fafafa;
-  flex-wrap: wrap;
-  align-content: center;
-}
-
 #container1 {
   height: 400px;
   width: 50%;
-  background-color: #ff8a65;
+  border: 1px solid gray;
+  background-color: snow;
   display: flex;
   padding: inherit;
 }

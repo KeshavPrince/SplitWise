@@ -10,6 +10,7 @@ function App() {
   const [isTempText2, setIsTempText2] = useState(true);
   const [amount, setAmount] = useState("");
   const unsolvedNetwork = useRef(null);
+  const solvedNetwork = useRef(null);
   const network = useRef(null);
 
   const OnChangeFrom = (e) => {
@@ -51,7 +52,9 @@ function App() {
 
   const handleSolve = (e) => {
     e.preventDefault();
-    splitWiseAlgorithm(credits);
+    let resultantGraph = splitWiseAlgorithm(credits);
+    setIsTempText2(false);
+    genrateGraph(resultantGraph, network, solvedNetwork);
   }
 
   return (
@@ -109,7 +112,7 @@ function App() {
           <div ref={unsolvedNetwork}>
           </div>
         </div>
-        <div id="container2" className="col l6">
+        <div id="container1" className="col l6">
           {isTempText2 === true && (
             <span id="temptext2">
               Simplified Solution Will be Displayed here..
@@ -117,7 +120,7 @@ function App() {
               Click on solve to get Solution !!
             </span>
           )}
-          <div id="solvedNetwork"></div>
+          <div ref = {solvedNetwork}></div>
         </div>
       </div>
       <br></br>

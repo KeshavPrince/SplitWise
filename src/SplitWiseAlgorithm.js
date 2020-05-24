@@ -1,9 +1,37 @@
-class MinHeap {
+class MaxHeap {
   constructor() {
     this.items = [];
   }
-  seek() {
-    return this.items[0];
+
+  size() {
+    return this.items.length;
+  }
+
+  top() {
+    if (this.items.length !== 0) return this.items[0];
+    else return -1;
+  }
+
+  getParentOfIndex(idx) {
+    return Math.floor((idx + 1) / 2 - 1);
+  }
+
+  getIndexOfLeftChild(idx) {
+    return (idx + 1) * 2 - 1;
+  }
+
+  getIndexOfRightChild(idx) {
+    return (idx + 1) * 2;
+  }
+
+  hasLeftChild(idx) {
+    if (this.getIndexOfLeftChild(idx) < this.items.length) return true;
+    else return false;
+  }
+
+  hasRightChild(idx) {
+    if (this.getIndexOfRightChild(idx) < this.items.length) return true;
+    else return false;
   }
 
   push(item) {
@@ -11,14 +39,12 @@ class MinHeap {
     this.items.push(item);
     while (
       i > 0 &&
-      this.items[Math.floor((i + 1) / 2 - 1)].priority >
-        this.items[i].priority
-    ) 
-    {
+      this.items[this.getParentOfIndex(i)].amount < this.items[i].amount
+    ) {
       let t = this.items[i];
-      this.items[i] = this.items[Math.floor((i + 1) / 2 - 1)];
-      this.items[Math.floor((i + 1) / 2 - 1)] = t;
-      i = Math.floor((i + 1) / 2 - 1);
+      this.items[i] = this.items[this.getParentOfIndex(i)];
+      this.items[this.getParentOfIndex(i)] = t;
+      i = this.getParentOfIndex(i);
     }
   }
 
@@ -28,45 +54,28 @@ class MinHeap {
     this.items[0] = this.items.pop();
     let i = 0;
     while (true) {
-      let lowest =
-        this.items[(i + 1) * 2].priority <
-        this.items[(i + 1) * 2 - 1].priority
-          ? (i + 1) * 2
-          : (i + 1) * 2 - 1;
-      if (this.items[i].priority > this.items[lowest].priority) {
+      let highest, highestIdx;
+      if (this.hasLeftChild(i)) {
+        highestIdx = i;
+        highest = this.items[this.getIndexOfLeftChild(i)].amount;
+      } else break;
+      if (this.hasRightChild(i)) {
+        highest = Math.max(
+          this.items[this.getIndexOfRightChild(i)].amount,
+          highest
+        );
+        if(highest === this.items[this.getIndexOfRightChild(i)].amount) {
+            highestIdx = this.getIndexOfRightChild(i);
+        }
+      }
+      if (this.items[i].amount < this.items[highestIdx].amount) {
         let t = this.items[i];
-        this.items[i] = this.items[lowest];
-        this.items[lowest] = t;
-        i = lowest;
-      } 
-      else break;
-    }
-    return ret;
-  }
-
-  delete(item) {
-    let i = this.items.indexOf(item);
-    // heapify
-    this.items[i] = this.items.pop();
-    while (true) {
-      let lowest =
-        this.items[(i + 1) * 2].priority <
-        this.items[(i + 1) * 2 - 1].priority
-          ? (i + 1) * 2
-          : (i + 1) * 2 - 1;
-      if (this.items[i].priority > this.items[lowest].priority) {
-        let t = this.items[i];
-        this.items[i] = this.items[lowest];
-        this.items[lowest] = t;
-        i = lowest;
+        this.items[i] = this.items[highestIdx];
+        this.items[highestIdx] = t;
+        i = highestIdx;
       } else break;
     }
-  }
-
-  heapify(arr) {
-    for (let i = 0; i < arr.length; i++) {
-      this.push(arr[i]);
-    }
+    return ret;
   }
 }
 
@@ -88,6 +97,43 @@ export function splitWiseAlgorithm(graph) {
       myMap.set(element.to, parseInt(-element.amount));
     }
   });
-  let kp = new MinHeap();
-  console.log(kp.seek());
+  let givers = new MaxHeap();
+  let takers = new MaxHeap();
+  myMap.forEach((value, key) => {
+    if (value < 0) {
+      givers.push({ amount: -value, label: key });
+    } else if (value > 0) {
+      takers.push({ amount: value, label: key });
+    }
+  });
+  let resultantGraph = [];
+  while (givers.size()) {
+    let curGiver = givers.top();
+    givers.pop();
+    let curTaker = takers.top();
+    takers.pop();
+    if (curGiver.amount >= curTaker.amount) {
+      curGiver.amount -= curTaker.amount;
+      resultantGraph.push({
+        from: curGiver.label,
+        to: curTaker.label,
+        amount: curTaker.amount,
+      });
+      if (curGiver.amount > 0) {
+        givers.push({ amount: curGiver.amount, label: curGiver.label });
+      }
+    } else {
+      curTaker.amount -= curGiver.amount;
+      resultantGraph.push({
+        from: curGiver.label,
+        to: curTaker.label,
+        amount: curTaker.amount,
+      });
+      if (curTaker.amount > 0) {
+        takers.push({ amount: curTaker.amount, label: curTaker.label });
+      }
+    }
+  }
+//   console.log(resultantGraph);
+  return resultantGraph;
 }

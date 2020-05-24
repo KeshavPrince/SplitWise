@@ -1,7 +1,6 @@
 import { Network } from "vis-network/standalone/esm/vis-network";
 
 export function genrateGraph(data, network, container) {
-  if (data.length === 0) return;
   const options = {
     width: "675px",
     edges: {

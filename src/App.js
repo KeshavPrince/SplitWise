@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
-import {genrateGraph} from './genrateGraph';
+import { genrateGraph } from "./genrateGraph";
 import Credits from "./credits";
-
+import {splitWiseAlgorithm} from './SplitWiseAlgorithm' 
 function App() {
   const [credits, setCredits] = useState([]);
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [isTempText2, setIsTempText2] = useState(true);
   const [amount, setAmount] = useState("");
   const unsolvedNetwork = useRef(null);
   const network = useRef(null);
@@ -22,7 +23,7 @@ function App() {
   };
 
   useEffect(() => {
-    genrateGraph(credits, network, unsolvedNetwork);
+      genrateGraph(credits, network, unsolvedNetwork);
   }, [credits]);
 
   const handleAddCredit = (e) => {
@@ -47,6 +48,11 @@ function App() {
     });
     setCredits(newCredits);
   };
+
+  const handleSolve = (e) => {
+    e.preventDefault();
+    splitWiseAlgorithm(credits);
+  }
 
   return (
     <div>
@@ -91,7 +97,8 @@ function App() {
             type="button"
             onClick={handleAddCredit}
             className="btn btn-success center waves-effect waves-light center"
-            id="addCredit">
+            id="addCredit"
+          >
             Add
           </button>
           <div className="col l2"></div>
@@ -99,23 +106,28 @@ function App() {
       </div>
       <div className="row">
         <div id="container1" className="col l6">
-          <div ref={unsolvedNetwork}></div>
+          <div ref={unsolvedNetwork}>
+          </div>
         </div>
         <div id="container2" className="col l6">
-          <span id="temptext">
-            Red link represents bus travel time : <br></br>
-            Green link represents flight travel time : <br></br>
-            Click on solve to get Solution !!
-          </span>
+          {isTempText2 === true && (
+            <span id="temptext2">
+              Simplified Solution Will be Displayed here..
+             <br></br>
+              Click on solve to get Solution !!
+            </span>
+          )}
           <div id="solvedNetwork"></div>
         </div>
       </div>
       <br></br>
-      <br></br>
-      <br></br>
-      <button type="button" className="btn green" id="solve">
+      <button type="button" onClick={handleSolve} className="btn green right" id="solve">
         Solve
       </button>
+      <br></br>
+      <br></br>
+      <br></br>
+
     </div>
   );
 }

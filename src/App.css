@@ -8,7 +8,7 @@ body {
   height: 400px;
   width: 50%;
   display: flex;
-  background-color: blue;
+  background-color: #fafafa;
   flex-wrap: wrap;
   align-content: center;
 }
@@ -16,11 +16,17 @@ body {
 #container1 {
   height: 400px;
   width: 50%;
-  background-color: yellow;
+  background-color: #ff8a65;
   display: flex;
   padding: inherit;
 }
-#temptext {
+#temptext2 {
+  text-align: center;
+  padding: 150px;
+  font-size: x-large;
+}
+
+#temptext1 {
   text-align: center;
   font-size: x-large;
 }

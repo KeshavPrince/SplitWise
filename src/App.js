@@ -7,7 +7,9 @@ function App() {
   const [credits, setCredits] = useState([]);
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [start, setStart] = useState(true);
   const [isTempText2, setIsTempText2] = useState(true);
+  const [isTempText1, setIsTempText1] = useState(true);
   const [amount, setAmount] = useState("");
   const unsolvedNetwork = useRef(null);
   const solvedNetwork = useRef(null);
@@ -24,6 +26,11 @@ function App() {
   };
 
   useEffect(() => {
+    if (start == true) {
+      setStart(false);
+      return;
+    }
+    setIsTempText1(false);
     genrateGraph(credits, network, unsolvedNetwork, "from");
   }, [credits]);
 
@@ -61,16 +68,17 @@ function App() {
     <div>
       <div className="container">
         <div
-        className ="red-text"
-        style={{
-          textDecorationLine: 'underline',
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize:"50px",
-          fontFamily:"Times",
-          marginBottom:"20px",
-        }}>
+          className="red-text"
+          style={{
+            textDecorationLine: "underline",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            fontSize: "50px",
+            fontFamily: "Times",
+            marginBottom: "20px",
+          }}
+        >
           SPLITWISE
         </div>
         <Credits credits={credits} deleteCredit={deleteCredit} />
@@ -113,9 +121,10 @@ function App() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          marginTop : "-10px",
-          marginBottom:"30px",
-        }}>
+          marginTop: "-10px",
+          marginBottom: "30px",
+        }}
+      >
         <button
           type="button"
           onClick={handleAddCredit}
@@ -127,6 +136,13 @@ function App() {
       </div>
       <div className="row">
         <div id="container1" className="col l6">
+          {isTempText1 === true && (
+            <span id="temptext2">
+              Simplified Solution Will be Displayed here..
+              <br></br>
+              Click on solve to get Solution !!
+            </span>
+          )}
           <div ref={unsolvedNetwork}></div>
         </div>
         <div id="container1" className="col l6">
@@ -146,7 +162,7 @@ function App() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          marginBottom:"30px",
+          marginBottom: "30px",
         }}
       >
         <button

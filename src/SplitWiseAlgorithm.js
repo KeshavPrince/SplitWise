@@ -81,7 +81,10 @@ class MaxHeap {
 
 export function splitWiseAlgorithm(graph) {
   let myMap = new Map();
+  console.log(myMap.size)
   graph.forEach((element) => {
+    console.log(element.from);
+    console.log(element.to);
     if (myMap.has(element.from)) {
       let cur = myMap.get(element.from);
       cur += parseInt(element.amount);
@@ -94,24 +97,35 @@ export function splitWiseAlgorithm(graph) {
       cur -= parseInt(element.amount);
       myMap.set(element.to, cur);
     } else {
-      myMap.set(element.to, parseInt(-element.amount));
+      myMap.set(element.to, -parseInt(element.amount));
     }
+  console.log(myMap);
   });
   let givers = new MaxHeap();
   let takers = new MaxHeap();
   myMap.forEach((value, key) => {
+    console.log(key);
+    console.log(value);
+    console.log(' ');
     if (value < 0) {
       givers.push({ amount: -value, label: key });
+    console.log(givers.top());
     } else if (value > 0) {
       takers.push({ amount: value, label: key });
+  console.log(takers.top());
     }
   });
+  console.log(takers.top());
   let resultantGraph = [];
   while (givers.size()) {
     let curGiver = givers.top();
     givers.pop();
     let curTaker = takers.top();
     takers.pop();
+    console.log('curGiver :');
+    console.log(curGiver);
+    console.log('curTaker :');
+    console.log(curTaker);
     if (curGiver.amount >= curTaker.amount) {
       curGiver.amount -= curTaker.amount;
       resultantGraph.push({
@@ -127,7 +141,7 @@ export function splitWiseAlgorithm(graph) {
       resultantGraph.push({
         from: curGiver.label,
         to: curTaker.label,
-        amount: curTaker.amount,
+        amount: curGiver.amount,
       });
       if (curTaker.amount > 0) {
         takers.push({ amount: curTaker.amount, label: curTaker.label });

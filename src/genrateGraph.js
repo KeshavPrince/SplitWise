@@ -1,11 +1,10 @@
 import { Network } from "vis-network/standalone/esm/vis-network";
 
-export function genrateGraph(data, network, container) {
-  console.log(data);
+export function genrateGraph(data, network, container, arrowsDirection) {
   const options = {
     width: "675px",
     edges: {
-      arrows: "from",
+      arrows: arrowsDirection,
       labelHighlightBold: true,
       font: {
         size: 20,
@@ -20,7 +19,7 @@ export function genrateGraph(data, network, container) {
       icon: {
         face: "FontAwesome",
         code: "\uf183",
-        size: 30,
+        size: 45,
         color: "#991133",
       },
     },

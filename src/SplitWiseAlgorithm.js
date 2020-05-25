@@ -134,6 +134,6 @@ export function splitWiseAlgorithm(graph) {
       }
     }
   }
-//   console.log(resultantGraph);
+  console.log(resultantGraph);
   return resultantGraph;
 }

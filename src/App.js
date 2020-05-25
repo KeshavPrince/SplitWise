@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 import { genrateGraph } from "./genrateGraph";
 import Credits from "./credits";
-import {splitWiseAlgorithm} from './SplitWiseAlgorithm' 
+import { splitWiseAlgorithm } from "./SplitWiseAlgorithm";
 function App() {
   const [credits, setCredits] = useState([]);
   const [from, setFrom] = useState("");
@@ -24,7 +24,7 @@ function App() {
   };
 
   useEffect(() => {
-      genrateGraph(credits, network, unsolvedNetwork);
+    genrateGraph(credits, network, unsolvedNetwork, "from");
   }, [credits]);
 
   const handleAddCredit = (e) => {
@@ -54,12 +54,25 @@ function App() {
     e.preventDefault();
     let resultantGraph = splitWiseAlgorithm(credits);
     setIsTempText2(false);
-    genrateGraph(resultantGraph, network, solvedNetwork);
-  }
+    genrateGraph(resultantGraph, network, solvedNetwork, "to");
+  };
 
   return (
     <div>
       <div className="container">
+        <div
+        className ="red-text"
+        style={{
+          textDecorationLine: 'underline',
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          fontSize:"50px",
+          fontFamily:"Times",
+          marginBottom:"20px",
+        }}>
+          SPLITWISE
+        </div>
         <Credits credits={credits} deleteCredit={deleteCredit} />
         <div className="row">
           <div className="col l3"></div>
@@ -94,43 +107,57 @@ function App() {
             <label for="amount">Amount</label>
           </div>
         </div>
-        <div className="row">
-          <div className="col l4"></div>
-          <button
-            type="button"
-            onClick={handleAddCredit}
-            className="btn btn-success center waves-effect waves-light center"
-            id="addCredit"
-          >
-            Add
-          </button>
-          <div className="col l2"></div>
-        </div>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop : "-10px",
+          marginBottom:"30px",
+        }}>
+        <button
+          type="button"
+          onClick={handleAddCredit}
+          className="btn btn-success center waves-effect waves-light center"
+          id="addCredit"
+        >
+          Add
+        </button>
       </div>
       <div className="row">
         <div id="container1" className="col l6">
-          <div ref={unsolvedNetwork}>
-          </div>
+          <div ref={unsolvedNetwork}></div>
         </div>
         <div id="container1" className="col l6">
           {isTempText2 === true && (
             <span id="temptext2">
               Simplified Solution Will be Displayed here..
-             <br></br>
+              <br></br>
               Click on solve to get Solution !!
             </span>
           )}
-          <div ref = {solvedNetwork}></div>
+          <div ref={solvedNetwork}></div>
         </div>
       </div>
       <br></br>
-      <button type="button" onClick={handleSolve} className="btn green right" id="solve">
-        Solve
-      </button>
-      <br></br>
-      <br></br>
-      <br></br>
-
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginBottom:"30px",
+        }}
+      >
+        <button
+          type="button"
+          onClick={handleSolve}
+          className="btn green centr"
+          id="solve"
+        >
+          Solve
+        </button>
+      </div>
     </div>
   );
 }
